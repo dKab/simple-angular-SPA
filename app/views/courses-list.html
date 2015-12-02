@@ -1,0 +1,53 @@
+<header-block>
+  <h2 class="inline view-heading">Курсы</h2>
+  <div class="pull-right shift-top-30">
+    <login-block></login-block>
+  </div>
+</header-block>
+<div class="container">
+  <div class="top-block container-fluid">
+    <div class="row">
+    <form class="form-inline col-sm-6 pull-left" novalidate ng-submit="courses.filterCourses()">
+      <div class="form-group">
+        <input type="text" placeholder="Фрагмент имени или дата" ng-model="courses.filterString" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary" ng-disabled="!courses.filterString">Найти</button>
+    </form>
+    <div class="col-sm-6 course-add-btn"><a href="#/courses/new" class="btn-success btn"><span class="glyphicon glyphicon-plus-sign"></span> Добавить курс</a></div>
+    </div>
+  </div>
+  <div class="courses">
+    <div class="container-fluid">
+      <div class="row" ng-repeat="course in courses.list">
+        <div class="course-item col-sm-12">
+          <div class="container-fluid outer-border">
+            <div class="row">
+              <div class="col-sm-9">
+                <div class="header-row">
+                    <h4 class="course-name">
+                      {{ course.name }}
+                    </h4>
+                    <div class="course-duration">
+                      {{ course.duration }}
+                    </div>
+                    <div class="release-date pull-right">{{ course.released | date:'dd.mm.yyyy' }}</div>
+                </div>
+                <div class="body-block">
+                  <p>
+                    {{ course.description | limitTo:400 }}
+                  </p>
+                  <p> {{ course.authors.join(', ') }} </p>
+                </div>
+              </div>
+              <div class="col-sm-3 actions">
+                <a ng-href="#/courses/{{ course.id }}" class="btn btn-lg btn-default btn-block">Редактировать</a>
+                <button class="btn btn-lg btn-danger btn-block" ng-click="courses.congfirmDelete(course.id)">Удалить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

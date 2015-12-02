@@ -9,6 +9,6 @@
  * Main module of the application.
  */
 angular
-  .module('untitled1App', [
-    'ngResource'
+  .module('courses', [
+    'ngResource', 'ngRoute'
   ]);
