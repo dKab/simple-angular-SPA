@@ -1,6 +1,7 @@
 /**
  * Created by Dmitry_Kabardinov on 12/2/2015.
  */
+'use strict';
 (function() {
   var app = angular.module('courses');
 
@@ -10,7 +11,7 @@
     return {
        templateUrl: 'views/login-block.html',
        controller: ['$log', '$location', controller],
-       controllerAs: "user",
+       controllerAs: 'user',
        replace: true
     };
   }

@@ -1,6 +1,7 @@
 /**
  * Created by Dmitry_Kabardinov on 12/2/2015.
  */
+'use strict';
 (function() {
   var app = angular.module('courses');
 
@@ -12,7 +13,7 @@
     };
 
     this.congfirmDelete = function confirmDelete() {
-      
+
     };
     this.list = [
       {
@@ -24,7 +25,8 @@
         ' Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur' +
         ' sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
         released: Date.now()
-      },
-    ]
+      }
+    ];
   }
+
 })();

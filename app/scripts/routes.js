@@ -1,6 +1,7 @@
 /**
  * Created by Dmitry_Kabardinov on 12/2/2015.
  */
+'use strict';
 angular.module('courses')
   .config(['$routeProvider', function($routeProvider) {
     $routeProvider
