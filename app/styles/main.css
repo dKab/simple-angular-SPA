@@ -79,10 +79,6 @@ body {
 .login-container .form-group {
   line-height: 28px;
 }
-.login-container .submit-btn-container {
-  padding-left: 5px;
-}
-
 
 .logo-placeholder {
   display: inline-block;

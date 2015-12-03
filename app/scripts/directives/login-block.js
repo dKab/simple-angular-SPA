@@ -10,16 +10,16 @@
   function loginBlock() {
     return {
        templateUrl: 'views/login-block.html',
-       controller: ['$log', '$location', controller],
-       controllerAs: 'user',
+       controller: ['authService', '$location', controller],
+       controllerAs: 'auth',
        replace: true
     };
   }
 
-  function controller($log, $location) {
-    this.login = 'Дмитрий Кабардинов';
+  function controller(authService, $location) {
+    this.userName = authService.getCurrentUserName();
     this.logOut = function logOut () {
-      $log.log('signing out');
+      authService.signOut();
       $location.path('/login');
     };
   }

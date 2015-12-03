@@ -30,7 +30,7 @@
                     <div class="course-duration">
                       {{ course.duration }}
                     </div>
-                    <div class="release-date pull-right">{{ course.released | date:'dd.mm.yyyy' }}</div>
+                    <div class="release-date pull-right">{{ course.starts | date:'dd.mm.yyyy' }}</div>
                 </div>
                 <div class="body-block">
                   <p>
@@ -41,13 +41,13 @@
               </div>
               <div class="col-sm-3 actions">
                 <a ng-href="#/courses/{{ course.id }}" class="btn btn-lg btn-default btn-block">Редактировать</a>
-                <button class="btn btn-lg btn-danger btn-block" ng-click="courses.congfirmDelete(course.id)">Удалить</button>
+                <button class="btn btn-lg btn-danger btn-block" ng-click="courses.congfirmDelete(course)">Удалить</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>
+<ng-include src="'views/confirm-delete.html'"></ng-include>
