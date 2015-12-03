@@ -5,12 +5,13 @@
 (function() {
   var app = angular.module('courses');
 
-  app.controller('CoursesListController', ['$log', coursesListController]);
+  app.controller('CoursesListController', ['$log', 'coursesService', coursesListController]);
 
-  function coursesListController($log) {
+  function coursesListController($log, coursesService) {
     this.filterCourses = function filterCourses() {
 
     };
+    var _self = this;
 
     this.congfirmDelete = function confirmDelete(course) {
       this.courseToDelete = course;
@@ -23,7 +24,6 @@
         return false;
       }
       var index,
-        _self = this,
         found = this.list.some(function findIndexOfCourseToDelete(course, i) {
           index = i;
           return (course === _self.courseToDelete);
@@ -40,18 +40,10 @@
     this.closeConfirmationWindow = function closeConfirmationWindow() {
         angular.element('#confirm_delete_course').modal('hide');
     };
-    this.list = [
-      {
-        id: 1,
-        name: 'Course 1',
-        duration: 380,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +
-        ' Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' +
-        ' Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur' +
-        ' sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-        starts: Date.now()
-      }
-    ];
+    coursesService.query().$promise
+      .then(function(array) {
+        _self.list = array;
+    });
   }
 
 })();
