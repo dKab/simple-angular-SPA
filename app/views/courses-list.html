@@ -18,7 +18,7 @@
   </div>
   <div class="courses">
     <div class="container-fluid">
-      <div class="row" ng-repeat="course in courses.list">
+      <div class="row" ng-repeat="course in courses.list" ng-show="courses.list.length">
         <div class="course-item col-sm-12">
           <div class="container-fluid outer-border">
             <div class="row">
@@ -47,6 +47,7 @@
           </div>
         </div>
       </div>
+      <div ng-hide="courses.list.length">Пока не добавлено ни одного курса.</div>
     </div>
   </div>
 </div>

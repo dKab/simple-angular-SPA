@@ -20,21 +20,15 @@
 
     this.deleteCourse = function deleteCourse() {
       if (!this.courseToDelete) {
-        $log.error('no course specified for removal');
-        return false;
+        $log.error('No course specified for removal');
       }
-      var index,
-        found = this.list.some(function findIndexOfCourseToDelete(course, i) {
-          index = i;
-          return (course === _self.courseToDelete);
-      });
-      if (found) {
-        this.list.splice(index, 1);
-        return true;
-      } else {
-        $log.error('Error happened while deleting the course');
-        return false;
-      }
+      //var courseToDelete = coursesService.get(this.courseToDelete);
+      this.courseToDelete.$remove().$promise
+        .then(function() {
+          _self.closeConfirmationWindow();
+        }, function() {
+          $log('Error happened while deleting the course');
+        });
     };
 
     this.closeConfirmationWindow = function closeConfirmationWindow() {
