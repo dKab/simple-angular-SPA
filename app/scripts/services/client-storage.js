@@ -28,7 +28,7 @@
               ' Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' +
               ' Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur' +
               ' sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-              created: new Date(2011,10,30),
+              created: new Date(2015, 11, 31),
               authors: [
                 'Пушкин', 'Лермонтов'
               ]
@@ -41,9 +41,22 @@
               ' Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' +
               ' Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur' +
               ' sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-              created: new Date(2011,8,30),
+              created: new Date(2014, 11, 17),
               authors: [
                 'Гоголь', 'Толстой'
+              ]
+            },
+            {
+              id: 3,
+              name: 'Course 3',
+              duration: 200,
+              description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +
+              ' Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' +
+              ' Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur' +
+              ' sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+              created: new Date(2013, 0, 22),
+              authors: [
+                'Фет', 'Есенин'
               ]
             }
           ]
@@ -88,11 +101,10 @@
         });
       if (found) {
         collection.splice(index, 1);
-        storage.set(collectionName, collection);
+        storage.set(collectionName, angular.toJson(collection));
       }
       return collection;
     };
-
     return service;
   }
 })();
