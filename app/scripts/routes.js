@@ -14,13 +14,13 @@ angular.module('courses')
         templateUrl: 'views/courses-list.html',
         controller: 'CoursesListController',
         controllerAs: 'courses',
-        requireLogin: true
+        requiresLogin: true
       })
       .when('/courses/:id', {
         templateUrl: 'views/course.html',
         controller: 'CourseController',
         controllerAs: 'course',
-        requireLogin: true
+        requiresLogin: true
       })
       .otherwise({
         redirectTo: '/courses'
