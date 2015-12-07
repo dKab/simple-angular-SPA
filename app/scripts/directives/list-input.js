@@ -40,21 +40,24 @@
         sourceItemsBlock.on('keydown', selectSourceItem);
         chooseBtn.on('click', addToChosen);
         sourceItemsBlock.on('keydown', function(event) {
-          if (event.keyCode === keyCodes.left) {
+          if (event.keyCode === keyCodes.left || event.keyCode === keyCodes.space) {
+            event.preventDefault();
             addToChosen();
           }
         });
         removeFromChosenBtn.on('click', removeFromChosen);
         chosenItemsBlock.on('keydown', function(event) {
-          if (event.keyCode === keyCodes.right) {
+          if (event.keyCode === keyCodes.right || event.keyCode === keyCodes.space) {
+            event.preventDefault();
             removeFromChosen();
           }
         });
 
         function render() {
           chosenItems = ngModelCtrl.$modelValue;
+          ngModelCtrl.$setViewValue(chosenItems);
 
-          function fillList(item, ind, arr) {
+          function fillList(item) {
             var containerBlock = this,
               list = containerBlock.find('ul'),
               li = angular.element(document.createElement('li'));
@@ -82,6 +85,7 @@
         }
 
         var keyCodes =  {
+          space: 32,
           left: 37,
           up: 38,
           right: 39,
@@ -151,9 +155,6 @@
                   .attr('aria-selected', 'true');
               }
               break;
-            default:
-              ;
-              break;
           }
         }
 
@@ -176,7 +177,7 @@
               source.splice(index, 1);
               chosenItems.push(dataString);
               render();
-              scope.onChoose(dataString); //TODO Ask question about this strange behaviour
+              scope.onChoose({author: dataString});
             }
           }
         }
@@ -189,7 +190,7 @@
               chosenItems.splice(index, 1);
               source.push(dataString);
               render();
-              scope.onRemove(dataString);
+              scope.onRemove({author: dataString});
             }
           }
         }
@@ -205,8 +206,8 @@
       template: template,
       scope: {
         source: '=',
-        onChoose: '&choose',
-        onRemove: '&remove'
+        onChoose: '&chooseCallback',
+        onRemove: '&removeCallback'
       },
       require: 'ngModel',
       replace: true

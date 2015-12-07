@@ -5,9 +5,9 @@
 (function() {
   var app = angular.module('courses');
 
-  app.controller('CourseController', ['$routeParams', '$document', '$timeout', CourseController]);
+  app.controller('CourseController', ['$routeParams', 'srUtil', CourseController]);
 
-  function CourseController($routeParams, $document, $timeout) {
+  function CourseController($routeParams, srUtil) {
 
     var course = this;
     course.header = $routeParams.id === 'new' ? 'Новый курс'
@@ -28,27 +28,18 @@
 
     course.submitIfValid = function submitIfValid(form) {
         if (form.$valid) {
-          return true;
-        } else {
-          console.log(form);
+         //do smthing
         }
     };
 
-    course.srNotifyAuthorSelected = function(author) {
-      var alert = $document[0].createElement('div'),
-        msg = 'Автор ' + author + ' был добавлен в список выбранныx авторов';
-      angular.element(alert)
-        .attr('role', 'alert')
-        .text(msg)
-        .addClass('sr-only');
-      $document.find('body').append(alert);
-      $timeout(function destroyAlert() {
-        angular.element(alert).remove();
-      }, 5000);
+    course.srNotifyAuthorSelected = function srNotifyAuthorSelected (author) {
+        var msg = 'Автор ' + author + ' был добавлен в список выбранныx авторов';
+        srUtil.notify(msg, 5000);
     };
 
-    course.srNotifyAuthorUnselected = function() {
-
+    course.srNotifyAuthorRemoved = function srNotifyAuthorSelected(author) {
+      var msg = 'Автор ' + author + ' был удален из списка выбранных авторов';
+      srUtil.notify(msg, 5000);
     };
 
   }

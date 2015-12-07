@@ -46,11 +46,11 @@
       <div class="col-sm-10">
         <list-input ng-model="course.authors"
                     source="course.availableAuthors"
-                    choose="course.srNotifyAuthorSelected(author)"
-                    remove="course.srNotifyAuthorRemoved()" >
+                    choose-callback="course.srNotifyAuthorSelected(author)"
+                    remove-callback="course.srNotifyAuthorRemoved(author)" >
         </list-input>
       </div>
-      <div class="col-sm-12">{{ course.authors.join(', '); }}</div>
+      <div class="col-sm-12">{{ course.authors.join(', ') }}</div>
     </div>
     <div class="row">
       <div class="text-danger col-sm-push-2 col-sm-10" ng-show="!course.authors.length && courseForm.$submitted">*Укажите хотя бы одного автора</div>
