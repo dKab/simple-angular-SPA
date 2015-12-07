@@ -132,10 +132,6 @@ body {
   margin-right: 15px;
 }
 
-/*.add-course-container {*/
-  /*max-width: 480px;*/
-/*}*/
-
 .add-course-container textarea {
   resize: vertical;
 }
@@ -152,3 +148,37 @@ body {
 .top-block form {
   z-index: 10;
 }
+
+.list-container {
+  border: 1px solid #c0c0c0;
+  width: 150px;
+  overflow-y: scroll;
+}
+.list-container .active[aria-selected=true] {
+  background: #31b0d5;
+  color: white;
+}
+
+.list-container ul {
+  list-style: none;
+  padding-left: 0;
+}
+.buttons-container, .list-container {
+  display: inline-block;
+  height: 200px;
+}
+.buttons-container {
+  vertical-align: top;
+  padding: 70px 15px 0;
+}
+.buttons-container button {
+  display: block;
+}
+.buttons-container button:first-child {
+  margin-bottom: 15px;
+}
+.list-container li {
+  cursor: pointer;
+  padding-left: 5px;
+}
+
