@@ -56,7 +56,6 @@
         function render() {
           chosenItems = ngModelCtrl.$modelValue;
           ngModelCtrl.$setViewValue(chosenItems);
-
           function fillList(item) {
             var containerBlock = this,
               list = containerBlock.find('ul'),
@@ -196,6 +195,14 @@
         }
 
         ngModelCtrl.$render = function() {
+          var filtered = source.filter(function(val) {
+            if (ngModelCtrl.$modelValue.indexOf(val) !== -1 ) {
+              return false;
+            } else {
+              return  true;
+            }
+          });
+          source = filtered;
           render();
         };
       }

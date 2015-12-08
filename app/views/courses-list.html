@@ -25,12 +25,12 @@
               <div class="col-sm-9">
                 <div class="header-row">
                     <h4 class="course-name">
-                      {{ course.name }}
+                      {{ course.title }}
                     </h4>
                     <div class="course-duration">
                       {{ course.duration }}
                     </div>
-                    <div class="release-date pull-right">{{ course.created | date:'dd.MM.yyyy' }}</div>
+                    <div class="release-date pull-right">{{ course.date | date:'dd.MM.yyyy' }}</div>
                 </div>
                 <div class="body-block">
                   <p>

@@ -8,27 +8,31 @@
   app.controller('CoursesListController', ['coursesService', coursesListController]);
 
   function coursesListController(coursesService) {
-    this.filterCourses = function filterCourses() {
+    var ctrl = this;
+    ctrl.filterCourses = function filterCourses() {
 
     };
-    var _self = this;
 
-    this.congfirmDelete = function confirmDelete(course) {
-      this.courseToDelete = course;
+
+    ctrl.congfirmDelete = function confirmDelete(course) {
+      ctrl.courseToDelete = course;
       angular.element('#confirm_delete_course').modal();
     };
 
-    this.deleteCourse = function() {
-      coursesService.deleteCourse(this.courseToDelete)
+    ctrl.deleteCourse = function() {
+      coursesService.deleteCourse(ctrl.courseToDelete)
         .then(function() {
-          _self.closeConfirmationWindow();
+          ctrl.closeConfirmationWindow();
         });
     };
 
-    this.closeConfirmationWindow = function closeConfirmationWindow() {
+    ctrl.closeConfirmationWindow = function closeConfirmationWindow() {
         angular.element('#confirm_delete_course').modal('hide');
     };
-    this.list = coursesService.getCourses();
+    coursesService.getCourses()
+      .then(function(courses) {
+      ctrl.list = courses;
+    });
   }
 
 })();

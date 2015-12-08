@@ -10,7 +10,7 @@
 (function() {
   var app  = angular
     .module('courses', [
-      'ngResource', 'ngRoute', 'LocalStorageModule', 'ngMockE2E']);
+      'ngResource', 'ngRoute', 'LocalStorageModule', 'ngMockE2E', 'filters']);
 
   app.run([
     '$rootScope', '$location', 'authService', '$httpBackend', 'clientStructuredDataStorage', 'coursesService', runConfiguration ]);
@@ -23,29 +23,35 @@
         }
       });
 
-    $httpBackend.whenGET('/api/courses').respond(function() {
+    $httpBackend.whenGET(/api\/courses\/(.+)/)
+      .respond(function getCourseFromClientStorage(method, url) {
+        var id = getIdFromURI(url),
+          course = clientStructuredDataStorage.getById('courses', id);
+        if (course) {
+          return [200, course];
+        } else {
+          return [404, {}];
+        }
+      });
+
+    $httpBackend.whenGET('/api/courses').respond(function getCoursesFromClientStorage() {
       var courses = clientStructuredDataStorage.getCollection('courses');
       return [200, courses];
     });
 
     $httpBackend.whenDELETE(/api\/courses\/(.+)/)
-      .respond(function(method, url) {
-        var matches = /\d+/.exec(url);
-        if (matches.length) {
-          var id = matches.shift();
-        }
+      .respond(function deleteCourseFromClientStorageAndUpdateLocalCollection(method, url) {
+        var id = getIdFromURI(url);
         var courses = clientStructuredDataStorage.deleteObjectFromCollection('courses', id);
-        coursesService.setCourses(courses);
         return [200, {}];
       });
     $httpBackend.whenGET(/\.html$/).passThrough();
-
-
   }
 
-
-
-
+  function getIdFromURI(URIString) {
+    var matches = /\d+/.exec(URIString);
+    return matches && matches.length ? matches.shift() : null;
+  }
 
 })();
 

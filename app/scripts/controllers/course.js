@@ -5,15 +5,34 @@
 (function() {
   var app = angular.module('courses');
 
-  app.controller('CourseController', ['$routeParams', 'srUtil', CourseController]);
+  app.controller('CourseController', ['$routeParams', 'srUtil', '$log', '$location', 'coursesService', CourseController]);
 
-  function CourseController($routeParams, srUtil) {
+  function CourseController($routeParams, srUtil, $log, $location, coursesService) {
 
-    var course = this;
-    course.header = $routeParams.id === 'new' ? 'Новый курс'
-      : /*Course.get($routeParams.name).name;*/ $routeParams.id;
+    var ctrl = this;
 
-    course.availableAuthors = [
+    ctrl.course = {
+      authors: []
+    };
+
+    if ($routeParams.id !== 'new') {
+      var courseId = $routeParams.id;
+      coursesService.getCourse(courseId)
+        .then(function(course) {
+          ctrl.course = course;
+          ctrl.header = course.title;
+        }, function(error) {
+          if (error.status === 404) {
+            ctrl.courseNotFound = true;
+          } else {
+            $log.error(error);
+          }
+        });
+    }
+
+    ctrl.header = $routeParams.id === 'new' ? 'Новый курс' : '';
+
+    ctrl.availableAuthors = [
       'Пушкин',
       'Лермонтов',
       'Гоголь',
@@ -21,23 +40,27 @@
       'Достоевский',
       'Горький',
       'Чехов',
-      'Есенин'
+      'Есенин',
+      'Фет'
     ];
 
-    course.authors = [];
-
-    course.submitIfValid = function submitIfValid(form) {
-        if (form.$valid) {
-         //do smthing
-        }
+    ctrl.submitIfValid = function submitIfValid(form) {
+      if (form.$invalid) {
+        return;
+      }
+      if (ctrl.course.id) {
+        coursesService.update();
+      } else {
+        coursesService.add();
+      }
     };
 
-    course.srNotifyAuthorSelected = function srNotifyAuthorSelected (author) {
-        var msg = 'Автор ' + author + ' был добавлен в список выбранныx авторов';
+    ctrl.srNotifyAuthorSelected = function srNotifyAuthorSelected (author) {
+        var msg = 'Автор ' + author + ' был добавлен в список выбранных авторов';
         srUtil.notify(msg, 5000);
     };
 
-    course.srNotifyAuthorRemoved = function srNotifyAuthorSelected(author) {
+    ctrl.srNotifyAuthorRemoved = function srNotifyAuthorSelected(author) {
       var msg = 'Автор ' + author + ' был удален из списка выбранных авторов';
       srUtil.notify(msg, 5000);
     };

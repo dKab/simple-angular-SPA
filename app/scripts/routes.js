@@ -19,7 +19,7 @@ angular.module('courses')
       .when('/courses/:id', {
         templateUrl: 'views/course.html',
         controller: 'CourseController',
-        controllerAs: 'course',
+        controllerAs: 'ctrl',
         requiresLogin: true
       })
       .otherwise({

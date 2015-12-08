@@ -1,21 +1,21 @@
 <header-block>
   <h2 class="inline view-heading">Курсы</h2>
-  <h2 class="inline"> &rarr; {{ course.header }}</h2>
+  <h2 class="inline"> &rarr; {{ ctrl.header }}</h2>
   <div class="pull-right shift-top-30">
     <login-block></login-block>
   </div>
 </header-block>
-<div class="container add-course-container">
-  <form name="courseForm" ng-submit="course.submitIfValid(courseForm)" class="form-horizontal" novalidate>
+<div class="container course-container" ng-hide="ctrl.courseNotFound">
+  <form name="courseForm" ng-submit="ctrl.submitIfValid(courseForm)" class="form-horizontal" novalidate>
     <div ng-class="{ 'has-error': courseForm.title.$invalid && (courseForm.title.$touched || courseForm.$submitted), 'form-group': true }">
       <label for="course_name" class="col-sm-2">Название</label>
-      <div class="col-sm-5"><input type="text" id="course_name" required name="title" ng-model="course.title" placeholder="Название" class="form-control"></div>
-      <div class="text-danger col-sm-3" ng-show="courseForm.title.$error.required && (courseForm.title.$touched || courseForm.submitted)">*Это поле обязательно</div>
+      <div class="col-sm-5"><input type="text" id="course_name" required name="title" ng-model="ctrl.course.title" placeholder="Название" class="form-control"></div>
+      <div class="text-danger col-sm-3" ng-show="courseForm.title.$error.required && (courseForm.title.$touched || courseForm.$submitted)">*Это поле обязательно</div>
     </div>
     <div ng-class="{ 'has-error': courseForm.description.$invalid && (courseForm.description.$touched || courseForm.$submitted), 'form-group': true }">
       <label for="description" class="col-sm-2">Описание</label>
       <div class="col-sm-8">
-        <textarea type="text" name="description" required  id="description" ng-model="course.description" class="form-control" placeholder="Описание"></textarea>
+        <textarea type="text" name="description" required  id="description" ng-model="ctrl.course.description" class="form-control" placeholder="Описание"></textarea>
       </div>
       <div ng-show="courseForm.description.$error.required && (courseForm.description.$touched || courseForm.$submitted)" class="text-danger col-sm-8 col-sm-push-2">*Это поле обязательно</div>
     </div>
@@ -27,7 +27,7 @@
                name="date"
                required
                placeholder="дд.мм.гггг"
-               ng-model="course.date"
+               ng-model="ctrl.course.date"
                />
       </div>
       <div class="text-danger col-sm-3" ng-show="courseForm.date.$error.required && (courseForm.date.$touched || courseForm.$submitted)">*Это поле обязательно</div>
@@ -35,25 +35,26 @@
     </div>
     <div ng-class="{ 'has-error': courseForm.duration.$invalid && (courseForm.duration.$touched || courseForm.$submitted), 'form-group': true }">
       <label for="duration" class="col-sm-2">Продолжительность</label>
-      <div class="col-sm-2"><input type="number" name="duration" id="duration" required min="0"  ng-model="course.duration" placeholder="минуты" class="form-control"></div>
-      <div class="col-sm-8"><span>3 часа 40 минут</span>
+      <div class="col-sm-2"><input type="number" name="duration" id="duration" required min="1"  ng-model="ctrl.course.duration" placeholder="минуты" class="form-control"></div>
+      <div class="col-sm-8"><span> {{ ctrl.course.duration | timeFormatter }}</span>
         <span class="text-danger" ng-show="courseForm.duration.$error.required && (courseForm.duration.$touched || courseForm.$submitted)">*Это поле обязательно</span>
         <span class="text-danger" ng-show="courseForm.duration.$error.number && (courseForm.duration.$touched || courseForm.$submitted)">Введите количество минут числом</span>
+        <span class="text-danger" ng-show="courseForm.duration.$error.min && (courseForm.duration.$touched || courseForm.$submitted)">Минимальное значение 1 минута</span>
       </div>
     </div>
     <div class="form-group">
       <label class="col-sm-2">Авторы</label>
       <div class="col-sm-10">
-        <list-input ng-model="course.authors"
-                    source="course.availableAuthors"
-                    choose-callback="course.srNotifyAuthorSelected(author)"
-                    remove-callback="course.srNotifyAuthorRemoved(author)" >
+        <list-input ng-model="ctrl.course.authors"
+                    source="ctrl.availableAuthors"
+                    choose-callback="ctrl.course.srNotifyAuthorSelected(author)"
+                    remove-callback="ctrl.course.srNotifyAuthorRemoved(author)" >
         </list-input>
       </div>
-      <div class="col-sm-12">{{ course.authors.join(', ') }}</div>
+      <div class="col-sm-12">{{ ctrl.course.authors.length }} {{ ctrl.course.authors.length | getEnding:['автор', 'автора', 'авторов'] }}<span ng-if="ctrl.course.authors.length">:</span> {{ ctrl.course.authors.join(', ') }}</div>
     </div>
     <div class="row">
-      <div class="text-danger col-sm-push-2 col-sm-10" ng-show="!course.authors.length && courseForm.$submitted">*Укажите хотя бы одного автора</div>
+      <div class="text-danger col-sm-push-2 col-sm-10" ng-show="!ctrl.course.authors.length && courseForm.$submitted">*Укажите хотя бы одного автора</div>
     </div>
     <div class="form-group buttons">
       <div class="col-sm-push-2 col-sm-10">
@@ -63,3 +64,4 @@
     </div>
   </form>
 </div>
+<div ng-if="ctrl.courseNotFound"><h1>404</h1><p>Resource not found.</p></div>
