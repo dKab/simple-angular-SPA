@@ -15,13 +15,25 @@
   app.run([
     '$rootScope', '$location', 'authService', '$httpBackend', 'clientStructuredDataStorage', 'coursesService', runConfiguration ]);
 
-  function runConfiguration($rootScope, $location, authService, $httpBackend, clientStructuredDataStorage, coursesService) {
+  function runConfiguration($rootScope, $location, authService, $httpBackend, clientStructuredDataStorage) {
 
       $rootScope.$on('$routeChangeStart', function (event, nextRoute) {
         if ( nextRoute.requiresLogin && !authService.isUserLoggedIn() ) {
           $location.path('/login').replace();
         }
       });
+
+    $httpBackend.whenPUT(/api\/courses\/(.+)/)
+      .respond(function(method, url, data) {
+        var course = angular.fromJson(data);
+        return [200, course];
+      });
+
+    $httpBackend.whenPOST('/api/courses').respond(function saveCourseToClientStorage(method, url, data) {
+      var course = angular.fromJson(data),
+        added = clientStructuredDataStorage.addObject('courses', course);
+      return [200, added];
+    });
 
     $httpBackend.whenGET(/api\/courses\/(.+)/)
       .respond(function getCourseFromClientStorage(method, url) {

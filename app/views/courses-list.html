@@ -18,7 +18,7 @@
   </div>
   <div class="courses">
     <div class="container-fluid">
-      <div class="row" ng-repeat="course in courses.list" ng-show="courses.list.length">
+      <div class="row" ng-repeat="course in courses.list | orderBy: '-date'" ng-show="courses.list.length">
         <div class="course-item col-sm-12">
           <div class="container-fluid outer-border">
             <div class="row">
@@ -28,7 +28,7 @@
                       {{ course.title }}
                     </h4>
                     <div class="course-duration">
-                      {{ course.duration }}
+                      {{ course.duration | timeFormatter }}
                     </div>
                     <div class="release-date pull-right">{{ course.date | date:'dd.MM.yyyy' }}</div>
                 </div>

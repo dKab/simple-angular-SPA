@@ -12,11 +12,13 @@
    * http://caniuse.com/#search=indexedDB
    * http://caniuse.com/#search=localStorage
    */
-  app.factory('clientStructuredDataStorage', ['localStorageService', clientStructuredDataStorage]);
+  app.factory('clientStructuredDataStorage', ['localStorageService', 'SerializationService', clientStructuredDataStorage]);
 
-  function clientStructuredDataStorage (localStorageService) {
+  function clientStructuredDataStorage (localStorageService, SerializationService) {
 
-    var service = {}, storage = localStorageService,
+    var service = {},
+      storage = localStorageService,
+      serialization = SerializationService,
       data = {
         courses: {
           predefinedData: [
@@ -116,66 +118,28 @@
       return found ? obj : null;
     };
 
-    /**
-     * This function serializes collection of objects which may contain Date objects so that
-     * Dates can be restored with safeDateJSONParse function.
-     * Theoretically it should handle nested objects of any depth because it's recursive but I hadn't time to test it.
-     * It's doing alright with one-level depth objects for sure though.
-     * @param collection
-     * @returns string
-     */
-    function safeDateSerializeCollection(collection) {
 
-      var prepared = collection.map(prepareObjectForSerialization);
-      function prepareObjectForSerialization(obj) {
-        var JSONSafeRepresentation = Array.isArray(obj) ? [] : {};
-        for (var prop in obj) {
-          if (obj.hasOwnProperty(prop)) {
-            if (typeof obj[prop] === 'object' && !(obj[prop] instanceof Date)) {
-              JSONSafeRepresentation[prop] = prepareObjectForSerialization(obj[prop]);
-            } else if (obj[prop] instanceof Date) {
-              JSONSafeRepresentation[prop] = {
-                timestamp: obj[prop].getTime(),
-                isDate: true
-              };
-            } else {
-              JSONSafeRepresentation[prop] = obj[prop];
-            }
-          }
-        }
-        return JSONSafeRepresentation;
+    service.addObject = function addObjectToCollection(collectionName, object) {
+      object.id = Date.now();
+      var collection = data[collectionName].actualData;
+      if (collection) {
+        collection.push(object);
+      } else {
+          data[collectionName].actualData = [object];
       }
+      storage.set(collectionName, safeDateSerializeCollection(collection));
+      return object;
+    };
+
+
+    function safeDateSerializeCollection(collection) {
+      var prepared = collection.map(serialization.prepare);
       return angular.toJson(prepared);
     }
 
-    /**
-     * This function must be used after collection has been parsed from JSON to restore all Date objects if they were
-     * processed with safeDateSerializeCollection
-     * @param json
-     * @returns array
-     */
     function safeDateJSONParse(json) {
       var collection = angular.fromJson(json), restored;
-      restored = collection.map(restoreDates);
-
-      function restoreDates(obj) {
-        var restoredObj = Array.isArray(obj) ? [] : {};
-        for (var prop in obj) {
-          if (obj.hasOwnProperty(prop)) {
-            if (typeof obj[prop] === 'object' && obj[prop].isDate) {
-              var dateObj = new Date();
-              dateObj.setTime(obj[prop].timestamp);
-              restoredObj[prop] = dateObj;
-            } else if (typeof obj[prop] === 'object') {
-              restoredObj[prop] = restoreDates(obj[prop]);
-            } else {
-              restoredObj[prop] = obj[prop];
-            }
-          }
-        }
-        return restoredObj;
-      }
-
+      restored = collection.map(serialization.restore);
       return restored;
     }
 

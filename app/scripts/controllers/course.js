@@ -49,9 +49,17 @@
         return;
       }
       if (ctrl.course.id) {
-        coursesService.update();
+        coursesService.updateCourse(ctrl.course)
+          .then(function(course) {
+            console.log('updated!');
+          });
       } else {
-        coursesService.add();
+        coursesService.saveCourse(ctrl.course)
+          .then(function(course) {
+            $location.path('/courses');
+          }, function(error) {
+            $log.error(error);
+          });
       }
     };
 

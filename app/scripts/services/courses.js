@@ -5,30 +5,29 @@
 (function() {
 var app = angular.module('courses');
 
-  app.factory('coursesService', ['$resource', '$q', coursesService]);
+  app.factory('coursesService', ['$resource', '$q', 'SerializationService', coursesService]);
 
-  function coursesService($resource, $q) {
+  function coursesService($resource, $q, SerializationService) {
 
-    var Courses = $resource('/api/courses/:id', {
+    var Course = $resource('/api/courses/:id', {
       id: '@id'
     }, {
-      update: {
+      'update': {
         method: 'PUT'
       }
-    });
-    var courses;
+    }), courses, serialization = SerializationService;
 
       /*
-       * For consistency all methods return promises, even if courses are found locally
+       * For consistency all public interface methods return promises, even if courses are found locally.
        */
     var serviceInstance = {
       getCourses: function getCourses() {
-        //at first call service will actually query backend but then it will store all the courses in local variable `courses` and
-        //return it when called subsequently
+        /* When called for the first time the service will actually query backend but then it will store all
+        the courses in local variable `courses` and return it on subsequent calls. */
         var deferred = $q.defer();
         if (typeof courses === 'undefined') {
           courses = [];
-            Courses.query().$promise
+            Course.query().$promise
             .then(function(coursesArray) {
               Array.prototype.push.apply(courses, coursesArray);
               deferred.resolve(courses);
@@ -40,7 +39,7 @@ var app = angular.module('courses');
       },
       deleteCourse: function deleteCourse(course) {
         var deferred = $q.defer();
-        Courses.delete({id: course.id}).$promise
+        Course.delete({id: course.id}).$promise
           .then(function() {
               var index;
               var found = courses.some(function findIndex(obj, ind) {
@@ -56,13 +55,25 @@ var app = angular.module('courses');
           });
         return deferred.promise;
       },
-      addCourse: function addCourse() {
-        //
+      saveCourse: function saveCourse(courseToSave) {
+        var courseResource = new Course(),
+          prepared = serialization.prepare(courseToSave);
+        angular.extend(courseResource, prepared);
+        var deferred = $q.defer();
+        courseResource.$save()
+          .then(function(course) {
+            var restored = serialization.restore(course);
+            courses.push(restored);
+            deferred.resolve(restored);
+          }, function(err) {
+            deferred.reject(err);
+          });
+        return deferred.promise;
       },
       getCourse: function getCourseById(id) {
         id = +id;
-        //if we have our courses in local variable we'll try to find the course we need in there. If we fail to find it there,
-        //then we'll send actual http GET request
+        /* If we have our courses in local variable we'll try to find the course we need in there. If we fail to find it there,
+        then we'll send actual http GET request. */
         if (typeof courses !== 'undefined') {
           var course = _.find(courses, {id: id});
           if (course) {
@@ -71,10 +82,13 @@ var app = angular.module('courses');
           }
           return deferred.promise;
         } else {
-          return Courses.get({id: id}).$promise;
+          return Course.get({id: id}).$promise;
         }
+      },
+      updateCourse: function UpdateCoures(course) {
+        //var prepared = serialization.prepare(course);
+        //return prepared.$update();
       }
-
     };
 
     return serviceInstance;
