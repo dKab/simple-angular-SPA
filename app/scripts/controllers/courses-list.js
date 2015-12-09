@@ -5,13 +5,26 @@
 (function() {
   var app = angular.module('courses');
 
-  app.controller('CoursesListController', ['coursesService', coursesListController]);
+  app.controller('CoursesListController', ['$scope', 'coursesService', coursesListController]);
 
-  function coursesListController(coursesService) {
+  function coursesListController($scope, coursesService) {
+
     var ctrl = this;
-    ctrl.filterCourses = function filterCourses() {
 
+    ctrl.filterString = '';
+
+    ctrl.filterCourses = function filterCourses() {
+      ctrl.searchCourseTitle = ctrl.filterString;
     };
+
+    $scope.$watch(angular.bind(ctrl, function() {
+      return this.filterString;
+    }), function(newVal) {
+        if (newVal === '') {
+          ctrl.filterCourses();
+        }
+    });
+
 
 
     ctrl.congfirmDelete = function confirmDelete(course) {

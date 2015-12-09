@@ -9,7 +9,7 @@
     <div class="row">
     <form class="form-inline col-sm-6 pull-left" novalidate ng-submit="courses.filterCourses()">
       <div class="form-group">
-        <input type="text" placeholder="Фрагмент имени или дата" ng-model="courses.filterString" class="form-control">
+        <input type="text" placeholder="Название курса"  ng-model="courses.filterString" class="form-control">
       </div>
       <button type="submit" class="btn btn-primary" ng-disabled="!courses.filterString">Найти</button>
     </form>
@@ -18,7 +18,7 @@
   </div>
   <div class="courses">
     <div class="container-fluid">
-      <div class="row" ng-repeat="course in courses.list | orderBy: '-date'" ng-show="courses.list.length">
+      <div class="row" ng-repeat="course in courses.list | filter:{title:courses.searchCourseTitle} | orderBy: '-date'" ng-show="courses.list.length">
         <div class="course-item col-sm-12">
           <div class="container-fluid outer-border">
             <div class="row">
