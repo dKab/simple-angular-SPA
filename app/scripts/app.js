@@ -10,7 +10,7 @@
 (function() {
   var app  = angular
     .module('courses', [
-      'ngResource', 'ngRoute', 'LocalStorageModule', 'ngMockE2E', 'filters']);
+      'ngResource', 'ngRoute', 'LocalStorageModule', 'ngMockE2E', 'filters', 'ngAnimate']);
 
   app.run([
     '$rootScope', '$location', 'authService', '$httpBackend', 'clientStructuredDataStorage', 'coursesService', runConfiguration ]);

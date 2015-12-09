@@ -1,0 +1,62 @@
+.view-container {
+  position: relative;
+}
+
+.fade-animated.ng-enter,
+.fade-animated.ng-leave {
+  background: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.fade-animated.ng-leave {
+  transition:0.5s linear all;
+  opacity:1;
+}
+.fade-animated.ng-leave.ng-leave-active {
+  opacity:0;
+}
+.fade-animated.ng-enter {
+  transition:0.5s linear all;
+  opacity:0;
+}
+.fade-animated.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
+.course-item-container.ng-enter,
+.course-item-container.ng-leave,
+.course-item-container.ng-move {
+  transition: 0.25s linear all;
+}
+
+.course-item-container.ng-enter,
+.course-item-container.ng-move {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.course-item-container.ng-move.ng-move-active,
+.course-item-container.ng-enter.ng-enter-active {
+  opacity: 1;
+  height: 150px;
+}
+.course-item-container.ng-leave {
+  opacity: 1;
+  height: 150px;
+  overflow: hidden;
+}
+
+.course-item-container.ng-leave.ng-leave-active {
+  opacity: 0;
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}

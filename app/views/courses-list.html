@@ -16,12 +16,10 @@
     <div class="col-sm-6 course-add-btn"><a href="#/courses/new" class="btn-success btn"><span class="glyphicon glyphicon-plus-sign"></span> Добавить курс</a></div>
     </div>
   </div>
-  <div class="courses">
-    <div class="container-fluid">
-      <div class="row" ng-repeat="course in courses.list | filter:{title:courses.searchCourseTitle} | orderBy: '-date'" ng-show="courses.list.length">
-        <div class="course-item col-sm-12">
+  <div class="courses ">
+      <div ng-repeat="course in courses.list | filter:{title:courses.searchCourseTitle} | orderBy: '-date'" class="course-item-container" ng-show="courses.list.length">
+        <div class="course-item">
           <div class="container-fluid outer-border">
-            <div class="row">
               <div class="col-sm-9">
                 <div class="header-row">
                     <h4 class="course-name">
@@ -43,12 +41,10 @@
                 <a ng-href="#/courses/{{ course.id }}" class="btn btn-lg btn-default btn-block">Редактировать</a>
                 <button class="btn btn-lg btn-danger btn-block" ng-click="courses.congfirmDelete(course)">Удалить</button>
               </div>
-            </div>
           </div>
         </div>
       </div>
-      <div ng-hide="courses.list.length">Пока не добавлено ни одного курса.</div>
-    </div>
+      <div ng-hide="courses.list.length" class="animate-hide">Пока не добавлено ни одного курса.</div>
   </div>
 </div>
 <ng-include src="'views/confirm-delete.html'"></ng-include>
