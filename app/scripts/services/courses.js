@@ -15,12 +15,16 @@ var app = angular.module('courses');
       'update': {
         method: 'PUT'
       }
-    }), courses, serialization = SerializationService;
-
+    }),
+      courses,
+      serviceInstance,
+      serialization = SerializationService;
       /*
        * For consistency all public interface methods return promises, even if courses are found locally.
+       * Since objects are serialized before being sent via $resource service the `saveCourse` and `updateCourse` methods
+       * do some preparation (if there are Date objects they are transformed into timestamps so they can be restored later).
        */
-    var serviceInstance = {
+      serviceInstance = {
       getCourses: function getCourses() {
         /* When called for the first time the service will actually query backend but then it will store all
         the courses in local variable `courses` and return it on subsequent calls. */
@@ -86,8 +90,27 @@ var app = angular.module('courses');
         }
       },
       updateCourse: function UpdateCoures(course) {
-        //var prepared = serialization.prepare(course);
-        //return prepared.$update();
+        var copy = angular.copy(course),
+          prepared = serialization.prepare(copy),
+          empty = new Course();
+        angular.extend(empty, prepared);
+        var  deferred = $q.defer();
+        empty.$update()
+            .then(function(updated) {
+              var restored = serialization.restore(updated);
+              var index;
+              var found = courses.some(function findIndex(obj, ind) {
+                index = ind;
+                return obj.id === updated.id;
+              });
+              if (found) {
+                courses[index] = restored;
+                deferred.resolve(restored);
+              }
+            }, function(err) {
+              deferred.reject();
+            });
+        return deferred.promise;
       }
     };
 

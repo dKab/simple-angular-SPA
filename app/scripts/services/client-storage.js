@@ -131,6 +131,20 @@
       return object;
     };
 
+    service.updateObject = function updateObject(collectionName, object) {
+      var collection = data[collectionName].actualData;
+      if (collection) {
+        var index;
+        var found = collection.some(function(item, ind) {
+          index = ind;
+          return (item.id == object.id);
+        });
+        if (found) {
+          collection[index] = object;
+          storage.set(collectionName, safeDateSerializeCollection(collection));
+        }
+      }
+    };
 
     function safeDateSerializeCollection(collection) {
       var prepared = collection.map(serialization.prepare);

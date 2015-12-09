@@ -51,7 +51,7 @@
       if (ctrl.course.id) {
         coursesService.updateCourse(ctrl.course)
           .then(function(course) {
-            console.log('updated!');
+            $location.path('/courses');
           });
       } else {
         coursesService.saveCourse(ctrl.course)

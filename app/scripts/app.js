@@ -26,6 +26,7 @@
     $httpBackend.whenPUT(/api\/courses\/(.+)/)
       .respond(function(method, url, data) {
         var course = angular.fromJson(data);
+        clientStructuredDataStorage.updateObject('courses', course);
         return [200, course];
       });
 

@@ -14,14 +14,14 @@
      * This function prepares object which may contain Date objects so that
      * Dates can be restored with restoreObjectDates function.
      * Theoretically it should handle nested objects of any depth because it's recursive but I hadn't chance to test it yet.
-     * It's doing alright with one-level depth objects for sure though.
+     * It's doing alright with one-level depth objects for sure though. Function ignores properties that start from `$`
      * @param obj
      * @returns Object
      */
     function prepareObjectForSerialization(obj) {
       var JSONSafeRepresentation = Array.isArray(obj) ? [] : {};
       for (var prop in obj) {
-        if (obj.hasOwnProperty(prop)) {
+        if (obj.hasOwnProperty(prop) && prop.indexOf('$') !== 0) {
           if (typeof obj[prop] === 'object' && !(obj[prop] instanceof Date)) {
             JSONSafeRepresentation[prop] = prepareObjectForSerialization(obj[prop]);
           } else if (obj[prop] instanceof Date) {
