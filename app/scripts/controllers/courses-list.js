@@ -2,7 +2,7 @@
  * Created by Dmitry_Kabardinov on 12/2/2015.
  */
 'use strict';
-(function() {
+(function () {
   var app = angular.module('courses');
 
   app.controller('CoursesListController', ['$scope', 'coursesService', coursesListController]);
@@ -17,14 +17,18 @@
       ctrl.searchCourseTitle = ctrl.filterString;
     };
 
-    $scope.$watch(angular.bind(ctrl, function() {
+    $scope.$watch(angular.bind(ctrl, function () {
       return this.filterString;
-    }), function(newVal) {
-        if (newVal === '') {
-          ctrl.filterCourses();
-        }
+    }), function (newVal) {
+      if (newVal === '') {
+        ctrl.filterCourses();
+      }
     });
 
+    $scope.$parent.main.breadcrumbs = [{
+      url: '#/courses',
+      title: 'Курсы'
+    }];
 
 
     ctrl.congfirmDelete = function confirmDelete(course) {
@@ -32,20 +36,20 @@
       angular.element('#confirm_delete_course').modal();
     };
 
-    ctrl.deleteCourse = function() {
+    ctrl.deleteCourse = function () {
       coursesService.deleteCourse(ctrl.courseToDelete)
-        .then(function() {
+        .then(function () {
           ctrl.closeConfirmationWindow();
         });
     };
 
     ctrl.closeConfirmationWindow = function closeConfirmationWindow() {
-        angular.element('#confirm_delete_course').modal('hide');
+      angular.element('#confirm_delete_course').modal('hide');
     };
     coursesService.getCourses()
-      .then(function(courses) {
-      ctrl.list = courses;
-    });
+      .then(function (courses) {
+        ctrl.list = courses;
+      });
   }
 
 })();

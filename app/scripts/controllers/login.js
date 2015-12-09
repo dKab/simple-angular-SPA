@@ -4,23 +4,29 @@
 'use strict';
 (function () {
     var app = angular.module('courses');
-    app.controller('LoginController', ['$location', 'authService', loginController]);
+    app.controller('LoginController', ['$location', 'authService', '$scope', loginController]);
 
-    function loginController($location, authService) {
-      var auth = authService;
-      this.doLogin = function doLogin() {
-        var _self = this;
-        auth.validateUser(_self.name, _self.password)
+    function loginController($location, authService, $scope) {
+
+      var parentController = $scope.$parent.main;
+      parentController.breadcrumbs = null;
+
+      var login = this,
+        auth = authService;
+
+      login.doLogin = function doLogin() {
+        auth.validateUser(login.name, login.password)
           .then(function(user) {
             auth.setCurrentUser(user);
+            parentController.showUserBlock = true;
             $location.path('/courses');
           }, function(err) {
-            _self.accessDenied = true;
-            _self.password = '';
+            login.accessDenied = true;
+            login.password = '';
           });
       };
 
-      this.allUsers = auth.getAllUsers();
+      login.allUsers = auth.getAllUsers();
 
     }
 })();

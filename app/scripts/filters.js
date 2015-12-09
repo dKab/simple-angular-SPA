@@ -3,5 +3,5 @@
  */
 'use strict';
 (function() {
-  var filtersModule = angular.module('filters', []);
+  angular.module('filters', []);
 })();

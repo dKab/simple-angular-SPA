@@ -25,11 +25,6 @@
 .fade-animated.ng-enter.ng-enter-active {
   opacity:1;
 }
-
-.container-fluid {
-  padding-left: 0;
-  padding-right: 0;
-}
 .course-item-container.ng-enter,
 .course-item-container.ng-leave,
 .course-item-container.ng-move {

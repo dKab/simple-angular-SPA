@@ -67,7 +67,9 @@ var app = angular.module('courses');
         courseResource.$save()
           .then(function(course) {
             var restored = serialization.restore(course);
-            courses.push(restored);
+            if (courses) {
+              courses.push(restored);
+            }
             deferred.resolve(restored);
           }, function(err) {
             deferred.reject(err);
@@ -80,9 +82,11 @@ var app = angular.module('courses');
         then we'll send actual http GET request. */
         if (typeof courses !== 'undefined') {
           var course = _.find(courses, {id: id});
+          var deferred = $q.defer();
           if (course) {
-            var deferred = $q.defer();
             deferred.resolve(course);
+          } else {
+            deferred.reject({status: 404});
           }
           return deferred.promise;
         } else {

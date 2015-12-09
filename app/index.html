@@ -1,64 +1,78 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/animations.css">
-    <!-- endbuild -->
-  </head>
-  <body ng-app="courses">
-    <!--[if lte IE 8]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-    <div class="container-fluid view-container">
-      <div ng-view class="fade-animated"></div>
-    </div>
+<head>
+  <meta charset="utf-8">
+  <title>Awesome courses</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/animations.css">
+  <!-- endbuild -->
+</head>
+<body ng-app="courses" ng-controller="MainController as main">
+<!--[if lte IE 8]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+  your browser</a> to improve your experience.</p>
+<![endif]-->
 
-    <div class="footer">
-      <div class="container">
-        <p><span class="glyphicon glyphicon-copyright-mark"></span> 2015</p>
-      </div>
+<div class="header" ng-hide="main.is404">
+  <div class="jumbotron">
+    <h1 class="logo-placeholder">Awesome courses!</h1>
+    <breadcrumbs ng-if="main.breadcrumbs" source="main.breadcrumbs"></breadcrumbs>
+    <div class="pull-right shift-top-30">
+      <user-block ng-if="main.showUserBlock"></user-block>
     </div>
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/lodash/lodash.js"></script>
-    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
-    <script src="bower_components/angular-mocks/angular-mocks.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="scripts/filters.js"></script>
-    <script src="scripts/app.js"></script>
-    <!-- endbuild -->
-    <script src="scripts/services/auth.js"></script>
-    <script src="scripts/directives/header-block.js"></script>
-    <script src="scripts/controllers/login.js"></script>
-    <script src="scripts/services/serialization.js"></script>
-    <script src="scripts/services/client-storage.js"></script>
-    <script src="scripts/services/srUtil.js"></script>
-    <script src="scripts/directives/list-input.js"></script>
-    <script src="scripts/services/courses.js"></script>
-    <script src="scripts/directives/login-block.js"></script>
-    <script src="scripts/filters/plural-ending.js"></script>
-    <script src="scripts/filters/time.js"></script>
-    <script src="scripts/controllers/courses-list.js"></script>
-    <script src="scripts/controllers/course.js"></script>
-    <script src="scripts/routes.js"></script>
+  </div>
+</div>
+
+<div class="container-fluid view-container">
+  <div ng-view class="fade-animated"></div>
+</div>
+
+<div class="footer">
+  <div class="container">
+    <p><span class="glyphicon glyphicon-copyright-mark"></span> 2015</p>
+  </div>
+</div>
+
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/lodash/lodash.js"></script>
+<script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+<script src="bower_components/angular-mocks/angular-mocks.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="scripts/filters.js"></script>
+<script src="scripts/app.js"></script>
+<!-- endbuild -->
+<script src="scripts/services/auth.js"></script>
+<script src="scripts/controllers/main.js"></script>
+<script src="scripts/directives/breadcrumbs.js"></script>
+<script src="scripts/controllers/login.js"></script>
+<script src="scripts/services/serialization.js"></script>
+<script src="scripts/services/client-storage.js"></script>
+<script src="scripts/services/srUtil.js"></script>
+<script src="scripts/directives/list-input.js"></script>
+<script src="scripts/services/courses.js"></script>
+<script src="scripts/directives/user-block.js"></script>
+<script src="scripts/filters/plural-ending.js"></script>
+<script src="scripts/filters/time.js"></script>
+<script src="scripts/controllers/courses-list.js"></script>
+<script src="scripts/controllers/course.js"></script>
+<script src="scripts/routes.js"></script>
 </body>
 </html>

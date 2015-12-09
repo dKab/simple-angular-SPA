@@ -5,9 +5,9 @@
 (function() {
   var app = angular.module('courses');
 
-  app.controller('CourseController', ['$routeParams', 'srUtil', '$log', '$location', 'coursesService', CourseController]);
+  app.controller('CourseController', ['$routeParams', 'srUtil', '$log', '$location', 'coursesService', '$scope', CourseController]);
 
-  function CourseController($routeParams, srUtil, $log, $location, coursesService) {
+  function CourseController($routeParams, srUtil, $log, $location, coursesService, $scope) {
 
     var ctrl = this;
 
@@ -15,12 +15,35 @@
       authors: []
     };
 
-    if ($routeParams.id !== 'new') {
+    ctrl.setBreadcrumbs = function setBreadcrumbs(title) {
+      $scope.$parent.main.breadcrumbs = [{
+        url: '#/courses',
+        title: 'Курсы'
+      }, {
+        url: '#' + $location.path(),
+        title: title
+      }];
+    };
+
+    $scope.$watch(angular.bind(ctrl, function() {
+      return this.course.title;
+    }), function(newVal, oldVal) {
+      if (typeof oldVal === 'undefined' && isNewCourse ) {
+        return false;
+      }
+      ctrl.setBreadcrumbs(newVal);
+    });
+
+    var isNewCourse = $routeParams.id === 'new';
+
+    if (isNewCourse) {
+      ctrl.setBreadcrumbs('Новый курс');
+    } else {
       var courseId = $routeParams.id;
       coursesService.getCourse(courseId)
         .then(function(course) {
           ctrl.course = course;
-          ctrl.header = course.title;
+          ctrl.setBreadcrumbs(course.title);
         }, function(error) {
           if (error.status === 404) {
             ctrl.courseNotFound = true;
@@ -29,8 +52,6 @@
           }
         });
     }
-
-    ctrl.header = $routeParams.id === 'new' ? 'Новый курс' : '';
 
     ctrl.availableAuthors = [
       'Пушкин',

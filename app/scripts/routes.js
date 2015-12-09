@@ -20,7 +20,13 @@ angular.module('courses')
         templateUrl: 'views/course.html',
         controller: 'CourseController',
         controllerAs: 'ctrl',
-        requiresLogin: true
+        //requiresLogin: true,
+        ////resolve: {
+        ////  'course': function() {
+        ////    $route.current.params
+        ////    return coursesService.getCourseById
+        ////  }
+        //}
       })
       .otherwise({
         redirectTo: '/courses'

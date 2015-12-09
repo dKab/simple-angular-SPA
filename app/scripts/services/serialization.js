@@ -2,7 +2,7 @@
  * Created by Dmitry_Kabardinov on 12/8/2015.
  */
 'use strict';
-(function() {
+(function () {
   var app = angular.module('courses');
 
   app.factory('SerializationService', serializeUtil);

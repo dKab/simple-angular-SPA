@@ -7,24 +7,24 @@
  * Main module of the application.
  */
 'use strict';
-(function() {
-  var app  = angular
+(function () {
+  var app = angular
     .module('courses', [
       'ngResource', 'ngRoute', 'LocalStorageModule', 'ngMockE2E', 'filters', 'ngAnimate']);
 
   app.run([
-    '$rootScope', '$location', 'authService', '$httpBackend', 'clientStructuredDataStorage', 'coursesService', runConfiguration ]);
+    '$rootScope', '$location', 'authService', '$httpBackend', 'clientStructuredDataStorage', 'coursesService', runConfiguration]);
 
   function runConfiguration($rootScope, $location, authService, $httpBackend, clientStructuredDataStorage) {
 
-      $rootScope.$on('$routeChangeStart', function (event, nextRoute) {
-        if ( nextRoute.requiresLogin && !authService.isUserLoggedIn() ) {
-          $location.path('/login').replace();
-        }
-      });
+    $rootScope.$on('$routeChangeStart', function (event, nextRoute) {
+      if (nextRoute.requiresLogin && !authService.isUserLoggedIn()) {
+        $location.path('/login').replace();
+      }
+    });
 
     $httpBackend.whenPUT(/api\/courses\/(.+)/)
-      .respond(function(method, url, data) {
+      .respond(function (method, url, data) {
         var course = angular.fromJson(data);
         clientStructuredDataStorage.updateObject('courses', course);
         return [200, course];
