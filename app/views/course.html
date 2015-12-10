@@ -28,28 +28,31 @@
       ng-class="{ 'has-error': courseForm.date.$invalid && (courseForm.date.$touched || courseForm.$submitted), 'form-group': true }">
       <label for="date" class="col-sm-2">Дата</label>
 
-      <div class="col-sm-3">
-        <input type="date" class="form-control"
+      <div class="col-sm-10">
+        <input type="text" class="form-control"
                id="date"
                name="date"
+               size="7"
                required
+               mask="\d\d\.\d\d\.\d\d\d\d"
+               date-format="dd.MM.yyyy"
                placeholder="дд.мм.гггг"
                ng-model="ctrl.course.date"
+               ng-model-options="{ allowInvalid: true }"
         />
-      </div>
-      <div class="text-danger col-sm-3"
-           ng-show="courseForm.date.$error.required && (courseForm.date.$touched || courseForm.$submitted)">*Это поле
+        <span class="text-danger ml-30"
+              ng-show="courseForm.date.$error.correctDate && (courseForm.date.$touched || courseForm.$submitted)">Некорректная дата
+        </span>
+        <span class="text-danger ml-30"
+              ng-show="courseForm.date.$error.required && (courseForm.date.$touched || courseForm.$submitted)">*Это поле
         обязательно
-      </div>
-      <div class="text-danger col-sm-3"
-           ng-show="courseForm.date.$error.date && (courseForm.date.$touched || courseForm.$submitted)">Неверный формат
-        даты
+      </span>
       </div>
     </div>
     <div
       ng-class="{ 'has-error': courseForm.duration.$invalid && (courseForm.duration.$touched || courseForm.$submitted), 'form-group': true }">
       <label for="duration" class="col-sm-2">Продолжительность</label>
-      <div class="col-sm-6"><input format-time="timeFormatter" type="number" name="duration" id="duration" required min="1"
+      <div class="col-sm-6"><input size="3" format-time="timeFormatter" type="text" name="duration" mask="\d\d\d\d" id="duration" required min="1"
                                    ng-model="ctrl.course.duration" placeholder="минуты" class="form-control">
       <span class="text-danger"
             ng-show="courseForm.duration.$error.required && (courseForm.duration.$touched || courseForm.$submitted)">*Это поле обязательно</span>

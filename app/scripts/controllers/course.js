@@ -24,8 +24,10 @@
       setBreadcrumbs('Курс не найден');
     } else {
       ctrl.course = course;
+      console.log(typeof course.date);
       setBreadcrumbs(course.title);
     }
+
 
 
     $scope.$watch(angular.bind(ctrl, function() {
