@@ -102,13 +102,17 @@
         empty.$update()
           .then(function (updated) {
             var restored = serialization.restore(updated);
-            var index;
-            var found = courses.some(function findIndex(obj, ind) {
-              index = ind;
-              return obj.id === updated.id;
-            });
-            if (found) {
-              courses[index] = restored;
+            if (courses) {
+              var index;
+              var found = courses.some(function findIndex(obj, ind) {
+                index = ind;
+                return obj.id === updated.id;
+              });
+              if (found) {
+                courses[index] = restored;
+                deferred.resolve(restored);
+              }
+            } else {
               deferred.resolve(restored);
             }
           }, function (err) {

@@ -24,7 +24,6 @@
       setBreadcrumbs('Курс не найден');
     } else {
       ctrl.course = course;
-      console.log(typeof course.date);
       setBreadcrumbs(course.title);
     }
 
@@ -33,10 +32,15 @@
     $scope.$watch(angular.bind(ctrl, function() {
       return this.course.title;
     }), function(newVal, oldVal) {
+      var breadcrumb, breadCrumbMaxLength = 25;
       if (typeof oldVal === 'undefined' && ctrl.isNewCourse ) {
         return false;
+      } else if (typeof newVal === 'string') {
+         breadcrumb = (newVal.length > breadCrumbMaxLength )
+           ? newVal.substr(0, breadCrumbMaxLength) + '...'
+           : newVal;
       }
-      setBreadcrumbs(newVal);
+      setBreadcrumbs(breadcrumb);
     });
 
     ctrl.availableAuthors = [

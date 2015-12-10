@@ -32,7 +32,7 @@
         <input type="text" class="form-control"
                id="date"
                name="date"
-               size="7"
+               size="8"
                required
                mask="\d\d\.\d\d\.\d\d\d\d"
                date-format="dd.MM.yyyy"
@@ -52,7 +52,7 @@
     <div
       ng-class="{ 'has-error': courseForm.duration.$invalid && (courseForm.duration.$touched || courseForm.$submitted), 'form-group': true }">
       <label for="duration" class="col-sm-2">Продолжительность</label>
-      <div class="col-sm-6"><input size="3" format-time="timeFormatter" type="text" name="duration" mask="\d\d\d\d" id="duration" required min="1"
+      <div class="col-sm-6"><input size="5" format-time="timeFormatter" type="text" name="duration" mask="\d\d\d\d" id="duration" required min="1"
                                    ng-model="ctrl.course.duration" placeholder="минуты" class="form-control">
       <span class="text-danger"
             ng-show="courseForm.duration.$error.required && (courseForm.duration.$touched || courseForm.$submitted)">*Это поле обязательно</span>

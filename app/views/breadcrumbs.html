@@ -1,7 +1,8 @@
 <div role="navigation" class="breadcrumbs">
   <ul class="nav nav-pills">
     <li ng-repeat="item in source" ng-class="{active: item.url === '#' + currentUrl }">
-      <a ng-href="{{ item.url !== '#' + currentUrl ? item.url : 'javascript:void(0);' }}">{{ item.title }}</a>
+      <a ng-if="item.url !== '#' + currentUrl" ng-href="{{ item.url }}">{{ item.title }}</a>
+      <a ng-if="item.url === '#' + currentUrl">{{ item.title }}</a>
     </li>
   </ul>
 </div>
