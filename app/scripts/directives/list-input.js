@@ -195,14 +195,9 @@
       }
 
       ngModelCtrl.$render = function () {
-        var filtered = source.filter(function (val) {
-          if (ngModelCtrl.$modelValue.indexOf(val) !== -1) {
-            return false;
-          } else {
-            return true;
-          }
+        source = source.filter(function (val) {
+          return ngModelCtrl.$modelValue.indexOf(val) === -1;
         });
-        source = filtered;
         render();
       };
     }

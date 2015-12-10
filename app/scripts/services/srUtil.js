@@ -2,7 +2,7 @@
  * Created by dmitriy on 07.12.15.
  */
 /**
- * This simple service provides utilities for accessibility
+ * This simple service provides accessibility utilities.
  */
 'use strict';
 (function() {
@@ -14,7 +14,7 @@
   function srUtil($document, $timeout) {
     /**
      * this function notifies screen reader user about some event by appending to the DOM message with role "alert"
-     * which will self destruct after period of time
+     * which will self destruct after period of time.
      * @param message
      * @param selfDestructAfterMilliseconds
      */

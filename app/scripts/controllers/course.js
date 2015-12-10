@@ -5,53 +5,37 @@
 (function() {
   var app = angular.module('courses');
 
-  app.controller('CourseController', ['$routeParams', 'srUtil', '$log', '$location', 'coursesService', '$scope', CourseController]);
+  app.controller('CourseController', ['coursesService', 'srUtil', '$location', '$log', '$scope', '$route', CourseController]);
 
-  function CourseController($routeParams, srUtil, $log, $location, coursesService, $scope) {
+  function CourseController(coursesService, srUtil,  $location, $log, $scope, $route) {
 
     var ctrl = this;
 
-    ctrl.course = {
-      authors: []
-    };
+    var course =  $route.current.locals.course;
 
-    ctrl.setBreadcrumbs = function setBreadcrumbs(title) {
-      $scope.$parent.main.breadcrumbs = [{
-        url: '#/courses',
-        title: 'Курсы'
-      }, {
-        url: '#' + $location.path(),
-        title: title
-      }];
-    };
+    if (typeof course === 'undefined') {
+      ctrl.course = {
+        authors: []
+      };
+      ctrl.isNewCourse = true;
+      setBreadcrumbs('Новый курс');
+    } else if (course === 404) {
+      ctrl.courseNotFound = true;
+      setBreadcrumbs('Курс не найден');
+    } else {
+      ctrl.course = course;
+      setBreadcrumbs(course.title);
+    }
+
 
     $scope.$watch(angular.bind(ctrl, function() {
       return this.course.title;
     }), function(newVal, oldVal) {
-      if (typeof oldVal === 'undefined' && isNewCourse ) {
+      if (typeof oldVal === 'undefined' && ctrl.isNewCourse ) {
         return false;
       }
-      ctrl.setBreadcrumbs(newVal);
+      setBreadcrumbs(newVal);
     });
-
-    var isNewCourse = $routeParams.id === 'new';
-
-    if (isNewCourse) {
-      ctrl.setBreadcrumbs('Новый курс');
-    } else {
-      var courseId = $routeParams.id;
-      coursesService.getCourse(courseId)
-        .then(function(course) {
-          ctrl.course = course;
-          ctrl.setBreadcrumbs(course.title);
-        }, function(error) {
-          if (error.status === 404) {
-            ctrl.courseNotFound = true;
-          } else {
-            $log.error(error);
-          }
-        });
-    }
 
     ctrl.availableAuthors = [
       'Пушкин',
@@ -67,19 +51,18 @@
 
     ctrl.submitIfValid = function submitIfValid(form) {
       if (form.$invalid) {
-        return;
-      }
-      if (ctrl.course.id) {
-        coursesService.updateCourse(ctrl.course)
-          .then(function(course) {
-            $location.path('/courses');
-          });
-      } else {
+        return false;
+      } else if (ctrl.isNewCourse) {
         coursesService.saveCourse(ctrl.course)
-          .then(function(course) {
+          .then(function() {
             $location.path('/courses');
           }, function(error) {
             $log.error(error);
+          });
+      } else if (ctrl.course.id) {
+        coursesService.updateCourse(ctrl.course)
+          .then(function() {
+            $location.path('/courses');
           });
       }
     };
@@ -93,5 +76,15 @@
       var msg = 'Автор ' + author + ' был удален из списка выбранных авторов';
       srUtil.notify(msg, 5000);
     };
+
+    function setBreadcrumbs(title) {
+      $scope.$parent.main.breadcrumbs = [{
+        url: '#/courses',
+        title: 'Курсы'
+      }, {
+        url: '#' + $location.path(),
+        title: title
+      }];
+    }
   }
 })();

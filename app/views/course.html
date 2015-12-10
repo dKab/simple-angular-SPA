@@ -21,7 +21,7 @@
       </div>
       <div
         ng-show="courseForm.description.$error.required && (courseForm.description.$touched || courseForm.$submitted)"
-        class="text-danger col-sm-8 col-sm-push-2">*Это поле обязательно
+        class="text-danger col-sm-8 col-sm-push-2 pt-5">*Это поле обязательно
       </div>
     </div>
     <div
@@ -49,12 +49,10 @@
     <div
       ng-class="{ 'has-error': courseForm.duration.$invalid && (courseForm.duration.$touched || courseForm.$submitted), 'form-group': true }">
       <label for="duration" class="col-sm-2">Продолжительность</label>
-
-      <div class="col-sm-2"><input type="number" name="duration" id="duration" required min="1"
-                                   ng-model="ctrl.course.duration" placeholder="минуты" class="form-control"></div>
-      <div class="col-sm-8"><span> {{ ctrl.course.duration | timeFormatter }}</span>
-        <span class="text-danger"
-              ng-show="courseForm.duration.$error.required && (courseForm.duration.$touched || courseForm.$submitted)">*Это поле обязательно</span>
+      <div class="col-sm-6"><input format-time="timeFormatter" type="number" name="duration" id="duration" required min="1"
+                                   ng-model="ctrl.course.duration" placeholder="минуты" class="form-control">
+      <span class="text-danger"
+            ng-show="courseForm.duration.$error.required && (courseForm.duration.$touched || courseForm.$submitted)">*Это поле обязательно</span>
         <span class="text-danger"
               ng-show="courseForm.duration.$error.number && (courseForm.duration.$touched || courseForm.$submitted)">Введите количество минут числом</span>
         <span class="text-danger"
