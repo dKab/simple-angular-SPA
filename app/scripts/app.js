@@ -55,7 +55,7 @@
     $httpBackend.whenDELETE(/api\/courses\/(.+)/)
       .respond(function deleteCourseFromClientStorageAndUpdateLocalCollection(method, url) {
         var id = getIdFromURI(url);
-        var courses = clientStructuredDataStorage.deleteObjectFromCollection('courses', id);
+        clientStructuredDataStorage.deleteObjectFromCollection('courses', id);
         return [200, {}];
       });
     $httpBackend.whenGET(/\.html$/).passThrough();

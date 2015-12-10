@@ -20,7 +20,7 @@
             auth.setCurrentUser(user);
             parentController.showUserBlock = true;
             $location.path('/courses');
-          }, function(err) {
+          }, function() {
             login.accessDenied = true;
             login.password = '';
           });

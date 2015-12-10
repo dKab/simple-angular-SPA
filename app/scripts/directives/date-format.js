@@ -22,7 +22,7 @@
         return $filter('date')(modelValue, format);
       });
 
-      ngModelCtrl.$validators.correctDate = function(modelValue, viewValue) {
+      ngModelCtrl.$validators.correctDate = function(modelValue) {
         /*
         * I'm going to implement validation only for 2 formats which are dd.MM.yyyy and ISO-8601 (yyyy-MM-dd)
         * because it's to much pain to deal with dates in JS. If other formats are needed
@@ -36,7 +36,7 @@
           return true;
         }
         var date;
-        if (format == 'dd.MM.yyyy') {
+        if (format === 'dd.MM.yyyy') {
           if (!modelValue.match(/^\d{2}\.\d{2}\.\d{4}$/)) {
             return false;
           }

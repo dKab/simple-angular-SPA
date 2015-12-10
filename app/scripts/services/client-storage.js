@@ -93,11 +93,12 @@
      * @param id
      */
     service.deleteObjectFromCollection = function deleteObjectFromCollection(collectionName, id) {
+      id = +id;
       var index,
         collection = data[collectionName].actualData,
         found = collection.some(function findIndexOfItemToDelete(item, i) {
           index = i;
-          return (id == item.id);
+          return (id === item.id);
         });
       if (found) {
         collection.splice(index, 1);
@@ -106,10 +107,11 @@
     };
 
     service.getById = function getObjectById(collectionName, id) {
+      id = +id;
       var collection = data[collectionName].actualData,
         obj, found;
       found = collection.some(function(current) {
-        var currentItemIsWhatWeAreLookingFor = (current.id == id);
+        var currentItemIsWhatWeAreLookingFor = (current.id === id);
         if (currentItemIsWhatWeAreLookingFor)  {
           obj = current;
         }
@@ -137,7 +139,7 @@
         var index;
         var found = collection.some(function(item, ind) {
           index = ind;
-          return (item.id == object.id);
+          return (item.id === object.id);
         });
         if (found) {
           collection[index] = object;

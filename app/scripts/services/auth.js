@@ -5,20 +5,19 @@
 (function() {
   var app = angular.module('courses');
 
-  app.factory('authService', ['$q', '$timeout', 'localStorageService', authService]);
-  //we'll be saving current user to localStorage so the session isn't loosed when user refreshes the page for some reason
-  function authService($q, $timeout, localStorageService) {
+  app.factory('authService', ['$q', '$timeout', '$window', 'localStorageService', authService]);
+  //we'll be saving current user to localStorage so the session isn't loosed when user refreshes the page for whatever reason
+  function authService($q, $timeout, $window, localStorageService) {
 
-    var availableUsers = [
+    var currentUser,
+      storage = localStorageService,
+      name = storage.get('userName'), _ = $window._,
+      availableUsers = [
       {
         login: 'demo',
         password: 'demo123'
       }
     ];
-
-    var currentUser,
-      storage = localStorageService,
-      name = storage.get('userName');
      if ( name ) {
        currentUser = _.find(availableUsers, {login: name});
      }

@@ -2,16 +2,16 @@
  * Created by Dmitry_Kabardinov on 12/2/2015.
  */
 'use strict';
-(function() {
+(function () {
   var app = angular.module('courses');
 
   app.controller('CourseController', ['coursesService', 'srUtil', '$location', '$log', '$scope', '$route', CourseController]);
 
-  function CourseController(coursesService, srUtil,  $location, $log, $scope, $route) {
+  function CourseController(coursesService, srUtil, $location, $log, $scope, $route) {
 
     var ctrl = this;
 
-    var course =  $route.current.locals.course;
+    var course = $route.current.locals.course;
 
     if (typeof course === 'undefined') {
       ctrl.course = {
@@ -28,17 +28,14 @@
     }
 
 
-
-    $scope.$watch(angular.bind(ctrl, function() {
+    $scope.$watch(angular.bind(ctrl, function () {
       return this.course.title;
-    }), function(newVal, oldVal) {
+    }), function (newVal, oldVal) {
       var breadcrumb, breadCrumbMaxLength = 25;
-      if (typeof oldVal === 'undefined' && ctrl.isNewCourse ) {
+      if (typeof oldVal === 'undefined' && ctrl.isNewCourse) {
         return false;
       } else if (typeof newVal === 'string') {
-         breadcrumb = (newVal.length > breadCrumbMaxLength )
-           ? newVal.substr(0, breadCrumbMaxLength) + '...'
-           : newVal;
+        breadcrumb = (newVal.length > breadCrumbMaxLength ) ? newVal.substr(0, breadCrumbMaxLength) + '...' : newVal;
       }
       setBreadcrumbs(breadcrumb);
     });
@@ -60,22 +57,22 @@
         return false;
       } else if (ctrl.isNewCourse) {
         coursesService.saveCourse(ctrl.course)
-          .then(function() {
+          .then(function () {
             $location.path('/courses');
-          }, function(error) {
+          }, function (error) {
             $log.error(error);
           });
       } else if (ctrl.course.id) {
         coursesService.updateCourse(ctrl.course)
-          .then(function() {
+          .then(function () {
             $location.path('/courses');
           });
       }
     };
 
-    ctrl.srNotifyAuthorSelected = function srNotifyAuthorSelected (author) {
-        var msg = 'Автор ' + author + ' был добавлен в список выбранных авторов';
-        srUtil.notify(msg, 5000);
+    ctrl.srNotifyAuthorSelected = function srNotifyAuthorSelected(author) {
+      var msg = 'Автор ' + author + ' был добавлен в список выбранных авторов';
+      srUtil.notify(msg, 5000);
     };
 
     ctrl.srNotifyAuthorRemoved = function srNotifyAuthorSelected(author) {

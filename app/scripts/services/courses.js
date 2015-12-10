@@ -5,9 +5,9 @@
 (function () {
   var app = angular.module('courses');
 
-  app.factory('coursesService', ['$resource', '$q', 'SerializationService', coursesService]);
+  app.factory('coursesService', ['$resource', '$q', '$window', 'SerializationService', coursesService]);
 
-  function coursesService($resource, $q, SerializationService) {
+  function coursesService($resource, $q, $window, SerializationService) {
 
     var Course = $resource('/api/courses/:id', {
         id: '@id'
@@ -18,7 +18,7 @@
       }),
       courses,
       serviceInstance,
-      serialization = SerializationService;
+      serialization = SerializationService, _ = $window._;
     /*
      * For consistency all public interface methods return promises, even if courses are found locally.
      * Since objects are serialized before being sent via $resource service the `saveCourse` and `updateCourse` methods
@@ -115,7 +115,7 @@
             } else {
               deferred.resolve(restored);
             }
-          }, function (err) {
+          }, function () {
             deferred.reject();
           });
         return deferred.promise;
