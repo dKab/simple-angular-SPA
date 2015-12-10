@@ -1,5 +1,5 @@
 {
-  "name": "untitled1",
+  "name": "courses",
   "version": "0.0.0",
   "dependencies": {
     "angular": "^1.4.0",
@@ -16,7 +16,7 @@
     "angular-route": "~1.4.8"
   },
   "appPath": "app",
-  "moduleName": "untitled1App",
+  "moduleName": "courses",
   "overrides": {
     "bootstrap": {
       "main": [

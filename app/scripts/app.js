@@ -1,8 +1,8 @@
 /**
  * @ngdoc overview
- * @name untitled1App
+ * @name courses
  * @description
- * # untitled1App
+ * # courses
  *
  * Main module of the application.
  */
