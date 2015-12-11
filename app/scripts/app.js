@@ -13,13 +13,18 @@
       'ngResource', 'ngRoute', 'LocalStorageModule', 'ngMockE2E', 'filters', 'ngAnimate']);
 
   app.run([
-    '$rootScope', '$location', 'authService', '$httpBackend', 'clientStructuredDataStorage', 'coursesService', runConfiguration]);
+    '$rootScope', '$location', 'authService', '$httpBackend', 'clientStructuredDataStorage', runConfiguration]);
 
   function runConfiguration($rootScope, $location, authService, $httpBackend, clientStructuredDataStorage) {
 
     $rootScope.$on('$routeChangeStart', function (event, nextRoute) {
       if (nextRoute.requiresLogin && !authService.isUserLoggedIn()) {
         $location.path('/login').replace();
+      }
+    });
+    $rootScope.$on('$locationChangeStart', function(event, newUrl) {
+      if (newUrl.indexOf('/login') > -1 && authService.isUserLoggedIn()) {
+        event.preventDefault();
       }
     });
 

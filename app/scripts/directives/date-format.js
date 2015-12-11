@@ -22,6 +22,23 @@
         return $filter('date')(modelValue, format);
       });
 
+
+        /**
+         * This parser makes sure that we have actual Date type in our model
+         * if the string that user typed in is a correct date string. Otherwise the model is just a string.
+         * In conjunction with our custom validator (see below) setting $error.correctDate on the input if the date string
+         * is invalid date the form will be $invalid and there's no way user can submit string instead of Date object.
+         * (If, of course, necessary precautions are taken such as checking form validity before submitting it)
+         */
+        ngModelCtrl.$parsers.push(function (viewValue) {
+        var ISOString = transformToISOFormat(viewValue);
+        if (ISOString) {
+          return dayExists(ISOString) ? new Date(ISOString) : viewValue;
+        } else {
+          return viewValue;
+        }
+      });
+
       ngModelCtrl.$validators.correctDate = function(modelValue) {
         /*
         * I'm going to implement validation only for 2 formats which are dd.MM.yyyy and ISO-8601 (yyyy-MM-dd)
@@ -35,19 +52,38 @@
         } else if (typeof modelValue === 'undefined' || modelValue === '') {
           return true;
         }
-        var date;
+        var ISOString;
         if (format === 'dd.MM.yyyy') {
-          if (!modelValue.match(/^\d{2}\.\d{2}\.\d{4}$/)) {
-            return false;
-          }
-          var parts = modelValue.split('.'),
-            year = parts.pop(), month = parts.pop(), day = parts.pop();
-          date = new Date(year + '-' + month + '-' + day);
+          ISOString = transformToISOFormat(modelValue);
         } else if (format === 'yyyy-MM-dd') {
-          date = new Date(modelValue);
+          ISOString = modelValue;
         }
-        return !isNaN(date);
+        return dayExists(ISOString);
       };
+
+      function transformToISOFormat(dateString) {
+        var transformed;
+        if (!dateString.match(/^\d{2}\.\d{2}\.\d{4}$/)) {
+          return false;
+        }
+        var parts = dateString.split('.'),
+          year = parts.pop(), month = parts.pop(), day = parts.pop();
+        transformed =  year + '-' + month + '-' + day;
+        return transformed;
+      }
+
+      function dayExists(ISODateString) {
+        var date = new Date(ISODateString);
+        // this will filter out obvious wrong strings like '3425-86-32'
+        if (isNaN(date)) {
+          return false;
+        }
+        var formatted = $filter('date')(date, 'yyyy-MM-dd');
+        /* This will filter more subtle cases e.g. `31.06.2018` (formatted will be 01.07.2018) because when new Date
+           constructor auto corrects wrong date by replacing non-existing day with correct.
+        */
+        return formatted === ISODateString;
+      }
 
     }
 

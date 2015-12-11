@@ -11,7 +11,7 @@
 
     function link(scope) {
       scope.currentUrl = $location.path();
-      scope.$on('$locationChangeStart', function() {
+      scope.$on('$locationChangeSuccess', function() {
         scope.currentUrl = $location.path();
       });
     }
