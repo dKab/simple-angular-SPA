@@ -61,7 +61,7 @@
             list = containerBlock.find('ul'),
             li = angular.element(document.createElement('li'));
           li.attr({
-            'tab-index': "-1",
+            'tab-index': '-1',
             'aria-selected': 'false',
             role: 'option'
           });

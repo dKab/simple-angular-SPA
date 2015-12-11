@@ -17,7 +17,7 @@
 
       ngModelCtrl.$formatters.push(function (modelValue) {
         if (!modelValue) {
-          return "";
+          return '';
         }
         return $filter('date')(modelValue, format);
       });
